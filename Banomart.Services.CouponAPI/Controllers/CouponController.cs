@@ -123,6 +123,7 @@ namespace Banomart.Services.CouponAPI.Controllers
         }
 
         [HttpDelete]
+        [Route("{id:int}")]
         public ResponseDto Delete(long id)
         {
             try
