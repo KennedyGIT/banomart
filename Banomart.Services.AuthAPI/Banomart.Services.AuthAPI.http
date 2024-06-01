@@ -1,0 +1,6 @@
+@Banomart.Services.AuthAPI_HostAddress = http://localhost:5226
+
+GET {{Banomart.Services.AuthAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

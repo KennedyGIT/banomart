@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Banomart.Services.CouponAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/coupon")]
     [ApiController]
     public class CouponController : ControllerBase
     {
