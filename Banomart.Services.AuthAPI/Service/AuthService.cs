@@ -11,17 +11,38 @@ namespace Banomart.Services.AuthAPI.Service
         private readonly DatabaseContext db;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IJwtTokenGenerator tokenGenerator;
 
         public AuthService(
             DatabaseContext db,
             UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IJwtTokenGenerator tokenGenerator)
         {
             this.db = db;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.tokenGenerator = tokenGenerator;
         }
 
+        public async Task<bool> AssignRole(string userName, string roleName)
+        {
+            var user = db.ApplicationUsers.FirstOrDefault(x => x.UserName == userName.ToLower());
+
+            if (user != null) 
+            {
+                if (!roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult()) 
+                {
+                    roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+
+                await userManager.AddToRoleAsync(user, roleName);
+
+                return true;
+            }
+
+            return false;
+        }
 
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
@@ -34,10 +55,11 @@ namespace Banomart.Services.AuthAPI.Service
                 return new LoginResponseDto() { User = null, Token = "" };
             }
 
-            // If User is found, Generate JWT Token
+            var token = tokenGenerator.GenerateToken(user);
 
             UserDto userDto = new()
             {
+                Id = user.Id,
                 Email = user.Email,
                 Username = user.UserName,
                 FirstName = user.FirstName,
@@ -48,7 +70,7 @@ namespace Banomart.Services.AuthAPI.Service
             LoginResponseDto responseDto = new()
             {
                 User = userDto,
-                Token = ""
+                Token = token
             };
 
             return responseDto;

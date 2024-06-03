@@ -18,7 +18,7 @@ namespace Banomart.Services.AuthAPI.Controllers
         }
 
 
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegistrationDto registrationDto) 
         {
             var errorMessage = await this.authService.RegisterUser(registrationDto);
@@ -33,7 +33,7 @@ namespace Banomart.Services.AuthAPI.Controllers
             return Ok(responseDto);
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
         {
             var loginResponse = await authService.Login(loginRequestDto);
@@ -46,6 +46,21 @@ namespace Banomart.Services.AuthAPI.Controllers
             }
 
             responseDto.Result = loginResponse;
+            return Ok(responseDto);
+        }
+
+        [HttpPost("AssignRole")]
+        public async Task<IActionResult> AssignRole([FromBody] AssignRoleDto assignRoleDto)
+        {
+            var isAssignRoleSuccessful = await authService.AssignRole(assignRoleDto.UserName, assignRoleDto.RoleName.ToUpper());
+
+            if (!isAssignRoleSuccessful)
+            {
+                responseDto.IsSuccessful = false;
+                responseDto.Message = "Error Encountered";
+                return BadRequest(responseDto);
+            }
+
             return Ok(responseDto);
         }
     }

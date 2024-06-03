@@ -6,5 +6,6 @@ namespace Banomart.Services.AuthAPI.Service.IService
     {
         Task<string> RegisterUser(RegistrationDto registrationRequestDto);
         Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
+        Task<bool> AssignRole(string userName, string roleName);
     }
 }
