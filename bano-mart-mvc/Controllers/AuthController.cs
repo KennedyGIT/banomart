@@ -7,12 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.InteropServices;
 using System.Security.Claims;
 
 namespace bano_mart_mvc.Controllers
 {
-    public class AuthController : Controller
+	public class AuthController : Controller
     {
         private readonly IAuthService authService;
         private readonly ITokenProvider tokenProvider;
