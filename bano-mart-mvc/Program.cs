@@ -1,6 +1,7 @@
 using bano_mart_mvc.Service;
 using bano_mart_mvc.Service.IService;
 using bano_mart_mvc.Utility;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,10 +10,19 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(o =>
+    {
+        o.ExpireTimeSpan = TimeSpan.FromHours(2);
+        o.LoginPath = "/Auth/Login";
+        o.AccessDeniedPath = "/Auth/AccessDenied";
+    });
 
 Common.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
 Common.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"];
 
+
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -31,7 +41,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

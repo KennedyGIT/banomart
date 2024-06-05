@@ -19,7 +19,7 @@ namespace bano_mart_mvc.Service
                 HttpMethod = Enums.HttpMethod.POST,
                 Data = assignRoleDto,
                 Url = Common.AuthAPIBase + "/api/auth/AssignRole"
-            });
+            }, BearerTokenIsEnabled:false);
         }
 
         public async Task<ResponseDto?> LoginAsync(LoginRequestDto loginRequestDto)
@@ -29,7 +29,7 @@ namespace bano_mart_mvc.Service
                 HttpMethod = Enums.HttpMethod.POST,
                 Data = loginRequestDto,
                 Url = Common.AuthAPIBase + "/api/auth/Login"
-            });
+            }, BearerTokenIsEnabled: false);
         }
 
         public async Task<ResponseDto?> RegisterAsync(RegistrationDto registrationDto)
@@ -39,7 +39,7 @@ namespace bano_mart_mvc.Service
                 HttpMethod = Enums.HttpMethod.POST,
                 Data = registrationDto,
                 Url = Common.AuthAPIBase + "/api/auth/Register"
-            });
+            }, BearerTokenIsEnabled: false );
         }
     }
 }

@@ -41,8 +41,8 @@ namespace Banomart.Services.AuthAPI.Controllers
             if (loginResponse.User == null) 
             {
                 responseDto.IsSuccessful = false;
-                responseDto.Message = "Username or password is incorrect";
-                return Unauthorized(responseDto);
+                responseDto.Message = "username or password is incorrect";
+                return BadRequest(responseDto);
             }
 
             responseDto.Result = loginResponse;

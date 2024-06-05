@@ -18,7 +18,7 @@ namespace Banomart.Services.AuthAPI.Service
         }
 
 
-        public string GenerateToken(ApplicationUser applicationUser)
+        public string GenerateToken(ApplicationUser applicationUser, IEnumerable<string> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -32,6 +32,8 @@ namespace Banomart.Services.AuthAPI.Service
                 new Claim("email", applicationUser.Email),
                 new Claim("userName", applicationUser.UserName),
             };
+
+            claimList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

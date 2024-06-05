@@ -55,7 +55,9 @@ namespace Banomart.Services.AuthAPI.Service
                 return new LoginResponseDto() { User = null, Token = "" };
             }
 
-            var token = tokenGenerator.GenerateToken(user);
+            var roles = await userManager.GetRolesAsync(user);
+
+            var token = tokenGenerator.GenerateToken(user, roles);
 
             UserDto userDto = new()
             {
@@ -85,7 +87,7 @@ namespace Banomart.Services.AuthAPI.Service
                 NormalizedEmail = registrationRequestDto.Email.ToUpper(),
                 FirstName = registrationRequestDto.FirstName.ToUpper(),
                 LastName = registrationRequestDto.LastName.ToUpper(),
-                PhoneNumber = registrationRequestDto.PhoneNumber
+                PhoneNumber = registrationRequestDto.PhoneNumber,
             };
 
             try 

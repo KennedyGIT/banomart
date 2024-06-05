@@ -9,5 +9,11 @@
             PUT,
             DELETE
         }
+
+        public enum Roles 
+        {
+            ADMIN,
+            CUSTOMER
+        }
     }
 }

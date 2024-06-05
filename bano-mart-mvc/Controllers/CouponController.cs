@@ -22,9 +22,13 @@ namespace bano_mart_mvc.Controllers
 
             ResponseDto? response = await couponService.GetAllCouponAsync();
 
-            if(response != null && response.IsSuccessful) 
+            if (response != null && response.IsSuccessful)
             {
                 list = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
+            }
+            else 
+            {
+                TempData["error"] = response?.Message;
             }
 
             return View(list);

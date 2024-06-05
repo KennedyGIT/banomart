@@ -9,14 +9,16 @@ namespace bano_mart_mvc.Service
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory httpClientFactory;
+        private readonly ITokenProvider tokenProvider;
 
-        public BaseService(IHttpClientFactory httpClientFactory) 
+        public BaseService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider) 
         {
             this.httpClientFactory = httpClientFactory;
+            this.tokenProvider = tokenProvider;
         }
 
 
-        public async Task<ResponseDto?> SendAsync(RequestDto requestDto)
+        public async Task<ResponseDto?> SendAsync(RequestDto requestDto, bool BearerTokenIsEnabled = true)
         {
             try 
             {
@@ -26,7 +28,12 @@ namespace bano_mart_mvc.Service
 
                 message.Headers.Add("Accept", "application/json");
 
-                //Add Token Implementation
+                if (BearerTokenIsEnabled) 
+                {
+                    var token = tokenProvider.GetToken();
+
+                    message.Headers.Add("Authorization", $"Bearer {token}");
+                }
 
                 message.RequestUri = new Uri(requestDto.Url);
 
