@@ -15,6 +15,8 @@ namespace bano_mart_mvc.Controllers
         }
 
 
+
+        
         public async Task<IActionResult> ProductIndex()
         {
             List<ProductDto>? list = new();

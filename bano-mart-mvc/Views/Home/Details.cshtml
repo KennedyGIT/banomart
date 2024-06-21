@@ -3,6 +3,7 @@
 
 <form method="post">
     <div class=" pt-4">
+        <input hidden asp-for="Id" class="form-control" />
         <div class="card container" style="border:1px solid #808080;">
             <div class="card-header bg-dark text-light row" style="border-radius: 0px;">
                 <div class="col-12 col-md-6">
@@ -39,7 +40,7 @@
                     <a asp-action="" class="btn btn-success btn-square form-control btn-lg" >Back to List</a>
                 </div>
                 <div class="col-12 col-md-6 ">
-                    <button type="submit" class="btn btn-primary form-control btn-lg">Add to Cart</button>
+                    <button  type="submit" class="btn btn-primary form-control btn-lg">Add to Cart</button>
                 </div>
             </div>
         </div>

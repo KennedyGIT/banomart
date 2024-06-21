@@ -10,13 +10,13 @@ namespace Banomart.Services.CouponAPI.Controllers
     [Route("api/coupon")]
     [ApiController]
     [Authorize]
-    public class CouponController : ControllerBase
+    public class CouponAPIController : ControllerBase
     {
         private readonly DatabaseContext db;
         private readonly IMapper mapper;
         private ResponseDto responseDto;
 
-        public CouponController(DatabaseContext db, IMapper mapper) 
+        public CouponAPIController(DatabaseContext db, IMapper mapper) 
         {
             this.db = db;
             this.mapper = mapper;
