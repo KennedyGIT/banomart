@@ -21,7 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Banomart.Services.AuthAPI",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Banomart.Services.ProductAPI", "Banomart.Services.ProductAPI\Banomart.Services.ProductAPI.csproj", "{E75FAC3B-0A16-4436-A7BB-25C8B0399314}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banomart.Services.ShoppingCartAPI", "Banomart.Services.ShoppingCartAPI\Banomart.Services.ShoppingCartAPI.csproj", "{F88B9ADF-93EF-49D1-B111-65E7D2B24796}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Banomart.Services.ShoppingCartAPI", "Banomart.Services.ShoppingCartAPI\Banomart.Services.ShoppingCartAPI.csproj", "{F88B9ADF-93EF-49D1-B111-65E7D2B24796}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BanoMart.MessageBus", "BanoMart.MessageBus\BanoMart.MessageBus.csproj", "{92203473-7F96-4277-844B-ECBF43AA6075}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banomart.Services.EmailAPI", "Banomart.Services.EmailAPI\Banomart.Services.EmailAPI.csproj", "{FBC1B589-F80B-4375-8CD6-6327381280A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +59,14 @@ Global
 		{F88B9ADF-93EF-49D1-B111-65E7D2B24796}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F88B9ADF-93EF-49D1-B111-65E7D2B24796}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F88B9ADF-93EF-49D1-B111-65E7D2B24796}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92203473-7F96-4277-844B-ECBF43AA6075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92203473-7F96-4277-844B-ECBF43AA6075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92203473-7F96-4277-844B-ECBF43AA6075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92203473-7F96-4277-844B-ECBF43AA6075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBC1B589-F80B-4375-8CD6-6327381280A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBC1B589-F80B-4375-8CD6-6327381280A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBC1B589-F80B-4375-8CD6-6327381280A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBC1B589-F80B-4375-8CD6-6327381280A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +78,8 @@ Global
 		{13D8647B-882E-4207-ABAA-FA102DD677FD} = {DE6704E3-B079-4EB6-9783-CB6BFF7AEE35}
 		{E75FAC3B-0A16-4436-A7BB-25C8B0399314} = {DE6704E3-B079-4EB6-9783-CB6BFF7AEE35}
 		{F88B9ADF-93EF-49D1-B111-65E7D2B24796} = {DE6704E3-B079-4EB6-9783-CB6BFF7AEE35}
+		{92203473-7F96-4277-844B-ECBF43AA6075} = {20595462-D1CA-4357-A5EA-8C0DF5CE7775}
+		{FBC1B589-F80B-4375-8CD6-6327381280A9} = {DE6704E3-B079-4EB6-9783-CB6BFF7AEE35}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1EE23458-2DD5-467A-9C3C-F258E609033C}

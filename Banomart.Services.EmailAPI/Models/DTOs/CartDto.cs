@@ -1,4 +1,4 @@
-﻿namespace bano_mart_mvc.Models
+﻿namespace Banomart.Services.EmailAPI.Models
 {
     public class CartDto
     {

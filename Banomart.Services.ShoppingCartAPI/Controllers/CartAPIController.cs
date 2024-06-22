@@ -4,6 +4,7 @@ using Banomart.Services.ShoppingCartAPI.Models;
 using Banomart.Services.ShoppingCartAPI.Models.Dto;
 using Banomart.Services.ShoppingCartAPI.Models.DTOs;
 using Banomart.Services.ShoppingCartAPI.Service.IService;
+using BanoMart.MessageBus;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,19 +20,25 @@ namespace Banomart.Services.ShoppingCartAPI.Controllers
         private IMapper mapper;
         private readonly IProductService productService;
         private readonly ICouponService couponService;
+        private readonly IMessageBus messageBus;
+        private readonly IConfiguration config;
         private readonly DatabaseContext db;
 
         public CartAPIController(
             DatabaseContext db, 
             IMapper mapper, 
             IProductService productService, 
-            ICouponService couponService
+            ICouponService couponService, 
+            IMessageBus messageBus,
+            IConfiguration config
             )
         {
             this.db = db;
             this.mapper = mapper;
             this.productService = productService;
             this.couponService = couponService;
+            this.messageBus = messageBus;
+            this.config = config;
             this.responseDto = new();
         }
 
@@ -192,6 +199,24 @@ namespace Banomart.Services.ShoppingCartAPI.Controllers
             {
                 responseDto.IsSuccessful=false;
                 responseDto.Message = ex.Message;   
+            }
+
+            return responseDto;
+        }
+
+        [HttpPost("EmailCart")]
+        public async Task<object> EmailCart([FromBody] CartDto cartDto) 
+        {
+            try 
+            {
+                await messageBus.PublishMessage(cartDto, 
+                    config.GetValue<string>("AzureConfig:CartQueueName"), 
+                    config.GetValue<string>("AzureConfig:AzureBusConnectionString"));
+            }
+            catch (Exception ex) 
+            {
+                responseDto.IsSuccessful = false;
+                responseDto.Message = ex.Message;
             }
 
             return responseDto;

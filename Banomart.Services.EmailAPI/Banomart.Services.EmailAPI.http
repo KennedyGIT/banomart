@@ -1,0 +1,6 @@
+@Banomart.Services.EmailAPI_HostAddress = http://localhost:5177
+
+GET {{Banomart.Services.EmailAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

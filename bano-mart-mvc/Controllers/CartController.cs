@@ -20,14 +20,10 @@ namespace bano_mart_mvc.Controllers
         [Authorize]
         public async Task<IActionResult> CartIndex()
         {
-            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+            CartDto cartDto = await GetCartByUserId();
 
-            ResponseDto responseDto = await cartService.GetCartByUserIdAsync(userId);
-
-            if ((responseDto != null) && (responseDto.IsSuccessful) && (responseDto.Result != null))
+            if (cartDto != null)
             {
-                CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(responseDto.Result));
-
                 return View(cartDto);
             }
             else
@@ -74,6 +70,27 @@ namespace bano_mart_mvc.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> EmailCart()
+        {
+            CartDto cartDto = await GetCartByUserId();
+
+            if(cartDto != null)
+            {
+
+                ResponseDto responseDto = await cartService.EmailCart(cartDto);
+
+                TempData["success"] = "Details of your cart has been emailed to you";
+                
+            }
+            else 
+            {
+                return RedirectToAction(nameof(CartIndex));
+            }
+
+            return RedirectToAction(nameof(CartIndex));
+        }
+
+        [HttpPost]
         public async Task<IActionResult> RemoveCoupon(CartDto cartDto)
         {
             cartDto.CartDetails = new List<CartDetailsDto>();
@@ -90,6 +107,26 @@ namespace bano_mart_mvc.Controllers
             else
             {
                 return View();
+            }
+        }
+
+        private async Task<CartDto> GetCartByUserId() 
+        {
+            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+
+            ResponseDto responseDto = await cartService.GetCartByUserIdAsync(userId);
+
+            if ((responseDto != null) && (responseDto.IsSuccessful) && (responseDto.Result != null))
+            {
+                CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(responseDto.Result));
+
+                cartDto.CartHeader.Email = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Email)?.FirstOrDefault()?.Value;
+
+                return cartDto;
+            }
+            else
+            {
+                return null;
             }
         }
     }

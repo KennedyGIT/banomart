@@ -23,6 +23,16 @@ namespace bano_mart_mvc.Service
             });
         }
 
+        public async Task<ResponseDto?> EmailCart(CartDto cartDto)
+        {
+            return await baseService.SendAsync(new RequestDto()
+            {
+                HttpMethod = Enums.HttpMethod.POST,
+                Data = cartDto,
+                Url = Common.CartAPIBase + "/api/cart/EmailCart"
+            });
+        }
+
         public async Task<ResponseDto?> GetCartByUserIdAsync(string userId)
         {
             return await baseService.SendAsync(new RequestDto()

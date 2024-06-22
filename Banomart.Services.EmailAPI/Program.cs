@@ -1,30 +1,25 @@
-using Banomart.Services.AuthAPI.Data;
-using Banomart.Services.AuthAPI.Models;
-using Banomart.Services.AuthAPI.Service;
-using Banomart.Services.AuthAPI.Service.IService;
-using BanoMart.MessageBus;
-using Microsoft.AspNetCore.Identity;
+using Banomart.Services.EmailAPI.Data;
+using Banomart.Services.EmailAPI.Extensions;
+using Banomart.Services.EmailAPI.Messaging;
+using Banomart.Services.EmailAPI.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<DatabaseContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDbContext<DatabaseContext>(o => {
-    o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
+var optionBuilder = new DbContextOptionsBuilder<DatabaseContext>();
+optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddSingleton(new EmailService(optionBuilder.Options));
 
-builder.Services.AddScoped<IMessageBus, MessageBus>();
+builder.Services.AddSingleton<IServiceBusConsumer, ServiceBusConsumer>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,16 +31,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();
 
 ApplyPendingMigrations();
 
-app.Run();
+app.UseAzureServiceBusConsumer();
 
+app.Run();
 
 void ApplyPendingMigrations()
 {

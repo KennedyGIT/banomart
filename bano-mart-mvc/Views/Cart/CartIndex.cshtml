@@ -1,11 +1,12 @@
 ﻿@model CartDto
 
 
-<form method="post">
+<form method="post" asp-action="EmailCart">
     <br />
     <input asp-for="CartHeader.UserId" hidden />
     <input asp-for="CartHeader.CartHeaderId" hidden />
     <input asp-for="CartHeader.CartTotal" hidden />
+    <input asp-for="CartHeader.Discount" hidden />
     <div class="">
         <div class="card border mt-4 container">
             <div class="card-header bg-dark text-light ml-0 row ">

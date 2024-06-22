@@ -5,6 +5,7 @@ using Banomart.Services.ShoppingCartAPI.Extensions;
 using Banomart.Services.ShoppingCartAPI.Service;
 using Banomart.Services.ShoppingCartAPI.Service.IService;
 using Banomart.Services.ShoppingCartAPI.Utility;
+using BanoMart.MessageBus;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -23,6 +24,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpClient("Product", p => p.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductAPI"])).AddHttpMessageHandler<AuthenticationHttpClientHandler>(); 
 
 builder.Services.AddHttpClient("Coupon", c => c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CouponAPI"])).AddHttpMessageHandler<AuthenticationHttpClientHandler>();
+
+builder.Services.AddScoped<IMessageBus, MessageBus>();
 
 builder.Services.AddScoped<IProductService, ProducService>();
 builder.Services.AddHttpContextAccessor();

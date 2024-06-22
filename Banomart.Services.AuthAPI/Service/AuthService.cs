@@ -2,6 +2,7 @@
 using Banomart.Services.AuthAPI.Models;
 using Banomart.Services.AuthAPI.Models.DTOs;
 using Banomart.Services.AuthAPI.Service.IService;
+using BanoMart.MessageBus;
 using Microsoft.AspNetCore.Identity;
 
 namespace Banomart.Services.AuthAPI.Service
@@ -12,17 +13,24 @@ namespace Banomart.Services.AuthAPI.Service
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IJwtTokenGenerator tokenGenerator;
+        private readonly IConfiguration config;
+        private readonly IMessageBus messageBus;
 
         public AuthService(
             DatabaseContext db,
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IJwtTokenGenerator tokenGenerator)
+            IJwtTokenGenerator tokenGenerator, 
+            IConfiguration config,
+            IMessageBus messageBus
+            )
         {
             this.db = db;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.tokenGenerator = tokenGenerator;
+            this.config = config;
+            this.messageBus = messageBus;
         }
 
         public async Task<bool> AssignRole(string userName, string roleName)
@@ -108,6 +116,8 @@ namespace Banomart.Services.AuthAPI.Service
                         PhoneNumber = createdUser.PhoneNumber
                     };
 
+                    await EmailCreatedUser(userDto);
+
                     return "";
                 }
                 else 
@@ -121,6 +131,20 @@ namespace Banomart.Services.AuthAPI.Service
             }
 
             return "Error Encountered";
+        }
+
+        private async Task EmailCreatedUser(UserDto userDto) 
+        {
+            try
+            {
+                await messageBus.PublishMessage(userDto,
+                    config.GetValue<string>("AzureConfig:TopicQueueName"),
+                    config.GetValue<string>("AzureConfig:AzureBusConnectionString"));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
